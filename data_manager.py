@@ -1,3 +1,5 @@
+# timetable_app/data_manager.py
+
 import pandas as pd
 from datetime import datetime, timedelta
 import os
@@ -12,10 +14,16 @@ def initialize_files():
         pd.DataFrame(columns=['Name', 'Start_Time', 'End_Time', 'Day_of_Week', 'Notes']).to_csv(ROUTINES_FILE, index=False)
 
 def load_lessons():
-    return pd.read_csv(LESSONS_FILE)
+    try:
+        return pd.read_csv(LESSONS_FILE)
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame(columns=['Type', 'Name', 'Date', 'Start_Time', 'End_Time', 'Day_of_Week', 'Location', 'Notes'])
 
 def load_routines():
-    return pd.read_csv(ROUTINES_FILE)
+    try:
+        return pd.read_csv(ROUTINES_FILE)
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame(columns=['Name', 'Start_Time', 'End_Time', 'Day_of_Week', 'Notes'])
 
 def save_lessons(df):
     df.to_csv(LESSONS_FILE, index=False)
